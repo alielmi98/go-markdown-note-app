@@ -1,0 +1,2 @@
+# go-markdown-note-app
+ A RESTful API built with Go that allows users to upload and manage markdown notes. Users can upload markdown files, check the grammar, save the note, and retrieve the HTML rendered version of the note. The app includes endpoints for grammar checking, note saving, note listing, and rendered note retrieval. This project demonstrates how to handle file uploads, parse and render markdown files, and perform grammar checks in a Go-based RESTful API.
