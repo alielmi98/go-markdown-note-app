@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/alielmi98/go-markdown-note-app/services"
-	"github.com/alielmi98/go-markdown-note-app/utils"
+	"github.com/alielmi98/go-markdown-note-app/internal/services"
+	"github.com/alielmi98/go-markdown-note-app/internal/utils"
 )
 
 // NoteHandler handles HTTP requests related to notes.

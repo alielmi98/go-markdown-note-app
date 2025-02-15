@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/alielmi98/go-markdown-note-app/utils"
+	"github.com/alielmi98/go-markdown-note-app/internal/utils"
 )
 
 // NoteService provides methods to handle note operations.

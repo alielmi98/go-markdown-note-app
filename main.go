@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/alielmi98/go-markdown-note-app/routers"
+	"github.com/alielmi98/go-markdown-note-app/internal/routers"
 )
 
 func main() {

@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"github.com/alielmi98/go-markdown-note-app/handlers"
-	"github.com/alielmi98/go-markdown-note-app/services"
+	"github.com/alielmi98/go-markdown-note-app/internal/handlers"
+	"github.com/alielmi98/go-markdown-note-app/internal/services"
 
 	"github.com/gorilla/mux"
 )

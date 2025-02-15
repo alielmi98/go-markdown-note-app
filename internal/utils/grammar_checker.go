@@ -57,5 +57,7 @@ func CheckGrammar(text string) ([]GrammarIssue, error) {
 		}
 	}
 
+	// Implementation of more grammar checks can be added here
+
 	return issues, nil
 }
