@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+
+	"github.com/alielmi98/go-markdown-note-app/utils"
 )
 
 // NoteService provides methods to handle note operations.
@@ -54,7 +56,7 @@ func (s *NoteService) UploadNote(file *multipart.FileHeader, uploadDir string) (
 	return dstPath, nil
 }
 
-// Delete Note deletes the specified note file from the server.
+// DeleteNote deletes the specified note file from the server.
 func (s *NoteService) DeleteNote(filename string) error {
 	// Lock the mutex to ensure thread safety
 	s.mu.Lock()
@@ -74,9 +76,9 @@ func (s *NoteService) DeleteNote(filename string) error {
 	}
 
 	return nil
-
 }
 
+// GetNoteList returns a list of all note filenames.
 func (s *NoteService) GetNoteList() ([]string, error) {
 	// Lock the mutex to ensure thread safety
 	s.mu.Lock()
@@ -102,6 +104,7 @@ func (s *NoteService) GetNoteList() ([]string, error) {
 	return files, nil
 }
 
+// GetNoteContent returns the content of the specified note file.
 func (s *NoteService) GetNoteContent(filename string) ([]byte, error) {
 	// Lock the mutex to ensure thread safety
 	s.mu.Lock()
@@ -124,4 +127,9 @@ func (s *NoteService) GetNoteContent(filename string) ([]byte, error) {
 	}
 
 	return data, nil
+}
+
+// CheckGrammar checks the grammar of the given text and returns a list of issues.
+func (s *NoteService) CheckGrammar(text string) ([]utils.GrammarIssue, error) {
+	return utils.CheckGrammar(text)
 }

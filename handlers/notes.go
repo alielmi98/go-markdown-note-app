@@ -117,3 +117,32 @@ func (h *NoteHandler) RenderToHtmlHandler(w http.ResponseWriter, r *http.Request
 	})
 
 }
+
+// CheckGrammarHandler handles the grammar checking of text.
+func (h *NoteHandler) CheckGrammarHandler(w http.ResponseWriter, r *http.Request) {
+	// Parse the filename from the request URL.
+	filename := strings.TrimPrefix(r.URL.Path, "/api/notes/check/")
+	if filename == "" {
+		http.Error(w, "Invalid filename", http.StatusBadRequest)
+		return
+	}
+
+	content, err := h.noteService.GetNoteContent(filename)
+	if err != nil {
+		http.Error(w, "Failed to get file content", http.StatusInternalServerError)
+		log.Printf("Failed to get file content: %s", err)
+		return
+	}
+
+	// Call the service to check the grammar.
+	issues, err := h.noteService.CheckGrammar(string(content))
+	if err != nil {
+		http.Error(w, "Failed to check grammar", http.StatusInternalServerError)
+		log.Printf("Failed to check grammar: %s", err)
+		return
+	}
+
+	// Respond with the list of grammar issues.
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(issues)
+}

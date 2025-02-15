@@ -23,6 +23,7 @@ func NewRouter() *mux.Router {
 	r.HandleFunc("/api/notes/{filename}", handler.DeleteHandler).Methods("DELETE")
 	r.HandleFunc("/api/notes", handler.ListNotesHandler).Methods("GET")
 	r.HandleFunc("/api/notes/{filename}", handler.RenderToHtmlHandler).Methods("GET")
+	r.HandleFunc("/api/notes/check/{filename}", handler.CheckGrammarHandler).Methods("GET")
 
 	return r
 }
