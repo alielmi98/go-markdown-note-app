@@ -19,8 +19,8 @@ func NewRouter() *mux.Router {
 	r := mux.NewRouter()
 
 	// Define routes for the API.
-	// Route for uploading markdown files.
 	r.HandleFunc("/api/notes", handler.UploadHandler).Methods("POST")
+	r.HandleFunc("/api/notes/{filename}", handler.DeleteHandler).Methods("DELETE")
 
 	return r
 }

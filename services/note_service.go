@@ -53,3 +53,26 @@ func (s *NoteService) UploadNote(file *multipart.FileHeader, uploadDir string) (
 
 	return dstPath, nil
 }
+
+// Delete Note deletes the specified note file from the server.
+func (s *NoteService) DeleteNote(filename string) error {
+	// Lock the mutex to ensure thread safety
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	// Create the file path
+	filePath := filepath.Join(s.UploadDir, filename)
+
+	// Check if the file exists
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		return err
+	}
+
+	// Delete the file
+	if err := os.Remove(filePath); err != nil {
+		return err
+	}
+
+	return nil
+
+}

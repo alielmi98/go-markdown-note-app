@@ -46,3 +46,25 @@ func (h *NoteHandler) UploadHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]string{"message": "File uploaded successfully"})
 }
+
+func (h *NoteHandler) DeleteHandler(w http.ResponseWriter, r *http.Request) {
+	// Parse the filename from the request URL.
+	filename := strings.TrimPrefix(r.URL.Path, "/api/notes/")
+	if filename == "" {
+		http.Error(w, "Invalid filename", http.StatusBadRequest)
+		return
+	}
+
+	// Call the service to delete the note.
+	err := h.noteService.DeleteNote(filename)
+	if err != nil {
+		http.Error(w, "Failed to delete file", http.StatusInternalServerError)
+		log.Printf("Failed to delete file: %s", err)
+		return
+	}
+
+	// Log the successful deletion and respond with a success message.
+	log.Printf("%s deleted successfully", filename)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "File deleted successfully"})
+}
