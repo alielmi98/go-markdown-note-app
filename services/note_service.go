@@ -76,3 +76,52 @@ func (s *NoteService) DeleteNote(filename string) error {
 	return nil
 
 }
+
+func (s *NoteService) GetNoteList() ([]string, error) {
+	// Lock the mutex to ensure thread safety
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	// Open the directory
+	dir, err := os.ReadDir(s.UploadDir)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create a slice to store the file names
+	var files []string
+
+	// Iterate over the directory entries
+	for _, entry := range dir {
+		// Check if the entry is a file
+		if entry.Type().IsRegular() {
+			files = append(files, entry.Name())
+		}
+	}
+
+	return files, nil
+}
+
+func (s *NoteService) GetNoteContent(filename string) ([]byte, error) {
+	// Lock the mutex to ensure thread safety
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	// Create the file path
+	filePath := filepath.Join(s.UploadDir, filename)
+
+	// Open the file
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	// Read the content of the file
+	data, err := io.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}

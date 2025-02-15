@@ -21,6 +21,8 @@ func NewRouter() *mux.Router {
 	// Define routes for the API.
 	r.HandleFunc("/api/notes", handler.UploadHandler).Methods("POST")
 	r.HandleFunc("/api/notes/{filename}", handler.DeleteHandler).Methods("DELETE")
+	r.HandleFunc("/api/notes", handler.ListNotesHandler).Methods("GET")
+	r.HandleFunc("/api/notes/{filename}", handler.RenderToHtmlHandler).Methods("GET")
 
 	return r
 }

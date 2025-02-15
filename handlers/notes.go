@@ -2,11 +2,13 @@ package handlers
 
 import (
 	"encoding/json"
+	"html/template"
 	"log"
 	"net/http"
 	"strings"
 
 	"github.com/alielmi98/go-markdown-note-app/services"
+	"github.com/alielmi98/go-markdown-note-app/utils"
 )
 
 // NoteHandler handles HTTP requests related to notes.
@@ -67,4 +69,51 @@ func (h *NoteHandler) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("%s deleted successfully", filename)
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"message": "File deleted successfully"})
+}
+
+func (h *NoteHandler) ListNotesHandler(w http.ResponseWriter, r *http.Request) {
+	// Call the service to list all notes.
+	notes, err := h.noteService.GetNoteList()
+	if err != nil {
+		http.Error(w, "Failed to list notes", http.StatusInternalServerError)
+		log.Printf("Failed to list notes: %s", err)
+		return
+	}
+
+	// Respond with the list of notes.
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(notes)
+}
+
+func (h *NoteHandler) RenderToHtmlHandler(w http.ResponseWriter, r *http.Request) {
+	// Parse the filename from the request URL.
+	filename := strings.TrimPrefix(r.URL.Path, "/api/notes/")
+	if filename == "" {
+		http.Error(w, "Invalid filename", http.StatusBadRequest)
+		return
+	}
+
+	content, err := h.noteService.GetNoteContent(filename)
+	if err != nil {
+		http.Error(w, "Failed to get file content", http.StatusInternalServerError)
+		log.Printf("Failed to get file content: %s", err)
+		return
+	}
+
+	// Parse the template file
+	tmpl, err := template.ParseFiles("templates/index.tmpl")
+	if err != nil {
+		http.Error(w, "Failed to parse template file", http.StatusInternalServerError)
+		log.Printf("Failed to parse template file: %s", err)
+		return
+	}
+
+	htmlContent := utils.MdToHtml(content)
+
+	w.WriteHeader(http.StatusOK)
+	tmpl.Execute(w, map[string]interface{}{
+		"PageTitle": filename,
+		"Content":   template.HTML(string(htmlContent)),
+	})
+
 }
