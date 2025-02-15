@@ -5,7 +5,7 @@ A RESTful API built with Go that allows users to upload and manage markdown note
 This project is part of the [roadmap.sh](https://roadmap.sh) backend intermediate level projects. You can find the project details [here](https://roadmap.sh/projects/markdown-note-taking-app).
 
 ## Project Structure
-
+```bash
 go-markdown-note-app/
 ├── internal/
 │   ├── handlers/
@@ -28,7 +28,7 @@ go-markdown-note-app/
 ├── go.mod
 ├── go.sum
 ├── main.go
-
+```
 ## Getting Started
 
 1. Clone the repository:
